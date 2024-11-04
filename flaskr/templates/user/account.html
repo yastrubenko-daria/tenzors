@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>YOUR ACCOUNT</h1>
+{% endblock %}
+
+{% block content %}
+  <h1>ACCOUNT # {{user.userlogin}}</h1>
+    <h2> Name: {{user.username}} </h2><br>
+    <h2> Surname: {{user.surname}} </h2><br>
+    <h2> Age: {{user.age}} </h2><br>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{{url_for('user.edit_account', user_id=user['id']) }}">Edit</a>
+    </li>
+
+{% endblock %}

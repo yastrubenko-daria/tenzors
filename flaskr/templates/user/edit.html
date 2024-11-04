@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>Edit</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="POST">
+    <label for="userlogin">UserLogin</label>
+    <input name="userlogin" id="userlogin" required><br>
+    <label for="username">Username</label>
+    <input name="username" id="username" required><br>
+    <label for="surname">Surname</label>
+    <input name="surname" id="surname" required><br>
+    <label for="age">Age</label>
+    <input name="age" id="age" required><br>
+    <input type="submit" value="Edit">
+  </form>
+  <hr>
+  <li class="nav-item">
+      <a class="nav-link active" href="{{url_for('user.deleted', user_id=user['id']) }}">Delete</a>
+  </li>
+{% endblock %}

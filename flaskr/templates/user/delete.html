@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>Project</h1>
+{% endblock %}
+
+{% block content %}
+  <h1>ACCOUNT # {{login}} successfully deleted</h1><br>
+
+  <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{{url_for('user.index') }}">Main_page</a>
+  </li>
+{% endblock %}

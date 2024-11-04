@@ -1,0 +1,29 @@
+<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">PROJECT</a>
+    <div class="navbar-expand" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% if g.user %}
+
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{ url_for('user.account',  user_id=user_id) }}">{{ g.user['userlogin'] }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{ url_for('user.logout') }}">Log Out</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{ url_for('user.register') }}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{ url_for('user.login') }}">Log In</a>
+            </li>
+         {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('user.index')}}">Home</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
