@@ -16,8 +16,8 @@
     <input name="age" id="age" required><br>
     <input type="submit" value="Edit">
   </form>
-  <hr>
-  <li class="nav-item">
+  <br>
+  <button class="nav-item">
       <a class="nav-link active" href="{{url_for('user.deleted', user_id=user['id']) }}">Delete</a>
-  </li>
+  </button>
 {% endblock %}

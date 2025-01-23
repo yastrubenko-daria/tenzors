@@ -10,7 +10,7 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',user=g.user, user_id=g.user['id'])
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -60,7 +60,7 @@ def login():
         if error is None:
             session.clear() # данные между запросами
             session['user_id'] = user['id']
-            return redirect(url_for('user.account', user_id=user['id']))
+            return redirect(url_for('tensor.calculator', user_id=user['id']))
         flash(error)
     return render_template('user/login.html')
 
@@ -132,6 +132,8 @@ def login_required(view):
             return redirect(url_for('user.login'))
         return view(**kwargs)
     return wrapped_view
+
+
 
  #todo: get user lk
 

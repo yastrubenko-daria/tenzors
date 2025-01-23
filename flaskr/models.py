@@ -6,9 +6,10 @@ class Tensor:
     #todo: работает без * ?проверять символ на ijk?
     #todo: проверка на тензор второго ранга
     #todo: прописать условие на единицу
+    #сделано #todo: кинуть исключения на 0
     def __init__(self, tensor):
         self.tensor=tensor
-        self.components = self.find_components(self.tensor)
+        self.components = Tensor.find_components(self.tensor)
 
     def __add__(self, other):
         new_components={}
@@ -18,6 +19,8 @@ class Tensor:
                     value=value_one+value_two
                     new_components[el_one]=value
         tensor=self.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor=Tensor(tensor)
         return new_tensor
 
@@ -29,6 +32,8 @@ class Tensor:
                     value = value_one - value_two
                     new_components[el_one] = value
         tensor = self.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
@@ -38,6 +43,8 @@ class Tensor:
             value = value_one * num
             new_components[el_one] = value
         tensor = self.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
@@ -47,6 +54,8 @@ class Tensor:
             value = value_one / num
             new_components[el_one] = value
         tensor = self.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
@@ -58,15 +67,19 @@ class Tensor:
 
     @staticmethod
     def find_components(tensor)->dict:
+        if tensor=='':
+            return 0
         components = {'ii': 0, 'ij': 0, 'ik': 0, 'ji': 0, 'jj': 0, 'jk': 0, 'ki': 0, 'kj': 0, 'kk': 0}
         elements = re.split(r"[+-]", tensor)
+        if elements[0]=='':
+            elements.pop(0)
         for elem in elements:
             el = elem.split('*')
             index = tensor.find(elem)
             if tensor[index - 1] == '+' or index == 0:
-                num = int(el[0])
+                num=float(el[0])
             else:
-                num = -1 * int(el[0])
+                num = -1*float(el[0])
             com = el[1]
             components[com] = num
         return components
@@ -74,6 +87,8 @@ class Tensor:
     @staticmethod
     def find_tensor(components)->str:
         tensor = ''
+        if components=={'ii': 0, 'ij': 0, 'ik': 0, 'ji': 0, 'jj': 0, 'jk': 0, 'ki': 0, 'kj': 0, 'kk': 0}:
+            return tensor
         for el in components:
             num = components[el]
             if num != 0:
@@ -92,7 +107,9 @@ class Tensor:
                         new_components[com] += self.components[one] * other.components[two]
                         continue
                     new_components[com] = self.components[one] * other.components[two]
-        tensor=self.find_tensor(new_components)
+        tensor=Tensor.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor=Tensor(tensor)
         return new_tensor
 
@@ -118,7 +135,9 @@ class Tensor:
                         new_components[com] += num
                         continue
                     new_components[com] = num
-        tensor = self.find_tensor(new_components)
+        tensor = Tensor.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor=Tensor(tensor)
         return new_tensor
 
@@ -133,6 +152,9 @@ class Tensor:
                         continue
                     new_components[com] = self.components[one] * vector.components[two]
         vector = Vector.find_vector(new_components)
+        if vector=='':
+            return 0
+        #print(vector)
         new_vector = Vector(vector)
         return new_vector
 
@@ -158,13 +180,15 @@ class Tensor:
                         new_components[com] += num
                         continue
                     new_components[com] = num
-        tensor = self.find_tensor(new_components)
+        tensor = Tensor.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
     def double_scalar(self, other):
         summ=0
-        new_tensor = self.scalar(self.tensor, other.tensor).tensor
+        new_tensor = self.scalar(other).tensor
         compon=self.find_components(new_tensor)
         for one in compon:
             if one[0]==one[1]:
@@ -173,7 +197,7 @@ class Tensor:
 
     def double_vector(self, other):
         compon_tensor={}
-        new_tensor=self.vector(self.tensor, other.tensor).tensor
+        new_tensor=self.vector(other).tensor
         new_components=self.find_components(new_tensor)
         for one in new_components:
             if len(one) != 3:
@@ -193,13 +217,15 @@ class Tensor:
                     compon_tensor[com] += num
                     continue
                 compon_tensor[com] = num
-        tensor = self.find_tensor(compon_tensor)
+        tensor = Tensor.find_tensor(compon_tensor)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
     def scalar_vector(self, other):
         compon_vector = {}
-        new_tensor = self.scalar(self.tensor, other.tensor).tensor
+        new_tensor = self.scalar(other).tensor
         new_components = self.find_components(new_tensor)
         for one in new_components:
             if one[0]!=one[1]:
@@ -217,13 +243,15 @@ class Tensor:
                     continue
                 compon_vector[com] = num
         vector = Vector.find_vector(compon_vector)
-        new_vector=Vector(vector)
+        if vector=='':
+            return 0
+        new_vector = Vector(vector)
         return new_vector
 
 
     def vector_scalar(self, other):
         compon_vector = {}
-        new_tensor = self.vector(self.tensor, other.tensor).tensor
+        new_tensor = self.vector(other).tensor
         new_components = self.find_components(new_tensor)
         for one in new_components:
             if len(one)!=3:
@@ -236,27 +264,34 @@ class Tensor:
                     continue
                 compon_vector[com] = num
         vector = Vector.find_vector(compon_vector)
+        if vector=='':
+            return 0
         new_vector=Vector(vector)
         return new_vector
 
     def transpose(self):
         new_components={}
+        if self==0:
+            return 0
         for el in self.components:
+            print(el)
             num=self.components[el]
             com=el[1]+el[0]
             if com in new_components:
                 new_components[com] += num
                 continue
             new_components[com] = num
-        tensor = self.find_tensor(new_components)
+        tensor = Tensor.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
     def antisymmetrical(self):
-        return 0.5 * (self.tensor-self.transpose())
+        return (self-self.transpose()) * 0.5
 
     def symmetrical(self):
-        return 0.5 * (self.tensor+self.transpose())
+        return (self+self.transpose()) * 0.5
 
     def first_invariant(self):
         summ=0
@@ -270,11 +305,11 @@ class Tensor:
         return 0.5 * (self.first_invariant()**2-self.second_degree().first_invariant())
 
     def third_invariant(self):
-        vec_i=Vector('i')
+        vec_i=Vector('1*i')
         vec_a=self.mult_scal_vec(vec_i)
-        vec_j=Vector('j')
+        vec_j=Vector('1*j')
         vec_b = self.mult_scal_vec(vec_j)
-        vec_k = Vector('k')
+        vec_k = Vector('1*k')
         vec_c = self.mult_scal_vec(vec_k)
         return vec_a.scalar(vec_b.vector(vec_c))
 
@@ -300,6 +335,8 @@ class Tensor:
                     continue
                 new_components[one] = num
         vector = Vector.find_vector(new_components)
+        if vector=='':
+            return 0
         new_vector = Vector(vector)
         return new_vector
 
@@ -310,10 +347,10 @@ class Tensor:
         i3=self.third_invariant()
         i2=self.second_invariant()
         i1=self.first_invariant()
-        ten=Tensor(self.tensor)
-        tensor=1/i3 *(self.second_degree()-i1 * ten + i2*self.eye_tensor)
-        new_tensor=Tensor(tensor)
-        return new_tensor
+        tensor=(self.second_degree()-self * i1 + self.eye_tensor() * i2) *(1/i3)
+        if tensor=='':
+            return 0
+        return tensor
 
 
 class Rotation_tensor(Tensor):
@@ -402,7 +439,7 @@ class Mapping_tensor(Tensor):
 class Vector:
     def __init__(self, vec):
         self.vec=vec
-        self.components=self.find_components
+        self.components=self.find_components(self.vec)
 
     def scalar(self, other):
         summ=0
@@ -415,14 +452,22 @@ class Vector:
     @staticmethod
     def find_components(vec) -> dict:
         components = {'i': 0, 'j': 0, 'k': 0}
+        if vec=='':
+            return 0
         elements = re.split(r"[+-]", vec)
+        if elements[0] == '':
+            elements.pop(0)
         for elem in elements:
             el = elem.split('*')
             index = vec.find(elem)
             if vec[index - 1] == '+' or index == 0:
-                num = int(el[0])
+                num = float(el[0])
+                if num%1==0:
+                    num=round(num)
             else:
-                num = -1 * int(el[0])
+                num = -1 * float(el[0])
+                if num%1==0:
+                    num=-1*round(num)
             com = el[1]
             components[com] = num
         return components
@@ -430,6 +475,8 @@ class Vector:
     @staticmethod
     def find_vector(components) -> str:
         vector = ''
+        if components==dict(i=0, j=0, k=0):
+            return vector
         for el in components:
             num = components[el]
             if num != 0:
@@ -461,6 +508,8 @@ class Vector:
                         continue
                     new_components[com] = num
         vector = self.find_vector(new_components)
+        if vector=='':
+            return 0
         new_vector = Vector(vector)
         return new_vector
 
@@ -475,6 +524,8 @@ class Vector:
                     continue
                 new_components[com] = num
         tensor = Tensor.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor
 
@@ -488,7 +539,9 @@ class Vector:
                         new_components[com] += self.components[one] * tensor.components[two]
                         continue
                     new_components[com] = self.components[one] * tensor.components[two]
-        vector = self.find_vector(new_components)
+        vector = Vector.find_vector(new_components)
+        if vector=='':
+            return 0
         new_vector = Vector(vector)
         return new_vector
 
@@ -514,6 +567,8 @@ class Vector:
                         new_components[com] += num
                         continue
                     new_components[com] = num
-        tensor = self.find_tensor(new_components)
+        tensor = Tensor.find_tensor(new_components)
+        if tensor=='':
+            return 0
         new_tensor = Tensor(tensor)
         return new_tensor

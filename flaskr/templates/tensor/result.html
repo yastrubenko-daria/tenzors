@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>CALCULATOR</h1>
+{% endblock %}
+
+{% block content %}
+
+<h3>RESALT:</h3>
+{% if operation=='vector' %}
+    $$({{A.tensor}})\times ({{B.tensor}})={{C}}$$
+{% elif operation=='scalar' %}
+    $$({{A.tensor}}) \cdot ({{B.tensor}})={{C}}$$
+{% elif operation=='mult_scal_vec' %}
+    $$({{A.tensor}}) \cdot ({{a.vec}})={{b}}$$
+{% elif operation=='mult_vect_vec' %}
+    $$({{A.tensor}}) \times ({{a.vec}})={{C}}$$
+{% elif operation=='double_scalar' %}
+    $$({{A.tensor}}) \cdot \cdot ({{B.tensor}})={{num}}$$
+{% elif operation=='double_vector' %}
+    $$({{A.tensor}}) \times \times ({{B.tensor}})={{C}}$$
+{% elif operation=='scalar_vector' %}
+    $$({{A.tensor}}) \cdot \times ({{B.tensor}})={{b}}$$
+{% elif operation=='vector_scalar' %}
+    $$({{A.tensor}}) \times \cdot ({{B.tensor}})={{b}}$$
+{% elif operation=='mult_scal_tens' %}
+    $$({{a.vec}}) \cdot ({{A.tensor}})={{b}}$$
+{% elif operation=='mult_vect_tens' %}
+    $$({{a.vec}}) \times ({{A.tensor}})={{C}}$$
+{% elif operation=='transpose' %}
+    $$\underline{\underline{A}}^T={{C}}$$
+{% elif operation=='antisymmetrical' %}
+    $$\underline{\underline{A}}^A={{C}}$$
+{% elif operation=='symmetrical' %}
+    $$\underline{\underline{A}}^S={{C}}$$
+{% elif operation=='first_invariant' %}
+    $$I_1(\underline{\underline{A}})={{num}}$$
+{% elif operation=='second_invariant' %}
+    $$I_2(\underline{\underline{A}})={{num}}$$
+{% elif operation=='third_invariant' %}
+    $$I_3(\underline{\underline{A}})={{num}}$$
+{% elif operation=='vector_invariant' %}
+    $$\underline{\underline{A_{\times}}}={{b}}$$
+{% elif operation=='second_degree' %}
+    $$\underline{\underline{A}}^2={{C}}$$
+{% elif operation=='inverse' %}
+    $$\underline{\underline{A}}^{-1}={{C}}$$
+{% endif %}
+<button class="nav-item">
+      <a class="nav-link active" href="{{url_for('tensor.calculator') }}">BACK</a>
+</button>
+
+{% endblock %}

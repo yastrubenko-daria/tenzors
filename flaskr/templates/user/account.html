@@ -9,8 +9,8 @@
     <h2> Name: {{user.username}} </h2><br>
     <h2> Surname: {{user.surname}} </h2><br>
     <h2> Age: {{user.age}} </h2><br>
-    <li class="nav-item">
+    <button class="nav-item">
       <a class="nav-link active" aria-current="page" href="{{url_for('user.edit_account', user_id=user['id']) }}">Edit</a>
-    </li>
+    </button>
 
 {% endblock %}
