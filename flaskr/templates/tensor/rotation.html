@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>CALCULATOR</h1>
+{% endblock %}
+
+{% block content %}
+{% if ten %}
+  <p><h3>Введите тензор</h3>$$\underline{\underline{P}}$$</p>
+{%endif%}
+{% if flag %}
+  {% if ten %}
+    или
+  {%endif%}
+  <p><h3>Введите угол поворота </h3>$$angle$$ и <h3>вектор поворота </h3>$$\underline{vec}$$</p>
+{%endif%}
+{% if vec  %}
+ <p><h3>Введите вектор </h3>$$\underline{а}$$</p>
+{%endif%}
+  <form method="POST">
+    <label for="tensor_P">$$\underline{\underline{P}}$$</label>
+    <input name="tensor_P" id="tensor_P" value='0' required><br>
+    <label for="angle">$$angle$$</label>
+    <input name="angle" id="angle" value='0' required><br>
+    <label for="rotation_vector">$$\underline{vec}$$</label>
+    <input name="rotation_vector" id="rotation_vector" value=0 required><br>
+    <label for="vector">$$\underline{a}$$</label>
+    <input name="vector" id="vector" value=0 required><br>
+    <!--<label for="plane">Plane relative to which to reflect the vector</label>
+    <input name="plane" id="plane" ><br>--><br>
+    <button type="submit" name="operation" value='vector'>$$\underline{\underline{A}}\times \underline{\underline{B}}$$</button>
+    <button type="submit" name="operation" value='scalar'>$$\underline{\underline{A}} \cdot \underline{\underline{B}}$$</button>
+    <button type="submit" name="operation" value='mult_scal_vec'>$$\underline{\underline{A}}\cdot \underline{a}$$</button>
+    <button type="submit" name="operation" value='mult_vect_vec'>$$\underline{\underline{A}}\times \underline{a}$$</button>
+    <button type="submit" name="operation" value='double_scalar'>$$\underline{\underline{A}}\cdot \cdot \underline{\underline{B}}$$</button>
+    <button type="submit" name="operation" value='double_vector'>$$\underline{\underline{A}}\times \times \underline{\underline{B}}$$</button>
+    <button type="submit" name="operation" value='scalar_vector'>$$\underline{\underline{A}}\cdot \times \underline{\underline{B}}$$</button>
+    <button type="submit" name="operation" value='vector_scalar'>$$\underline{\underline{A}}\times \cdot \underline{\underline{B}}$$</button><br><br>
+
+    <button type="submit" name="operation" value='vector_inv'>$$\underline{\underline{B}}\times \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='scalar_inv'>$$\underline{\underline{B}} \cdot \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='mult_scal_tens'>$$\underline{a}\cdot \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='mult_vect_tens'>$$\underline{a}\times \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='double_scalar_inv'>$$\underline{\underline{B}}\cdot \cdot \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='double_vector_inv'>$$\underline{\underline{B}}\times \times \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='scalar_vector_inv'>$$\underline{\underline{B}}\cdot \times \underline{\underline{A}}$$</button>
+    <button type="submit" name="operation" value='vector_scalar_inv'>$$\underline{\underline{B}}\times \cdot \underline{\underline{A}}$$</button><br><br>
+
+    <button type="submit" name="operation" value='transpose'>$$\underline{\underline{A}}^T$$</button>
+    <button type="submit" name="operation" value='antisymmetrical'>$$\underline{\underline{A}}^A$$</button>
+    <button type="submit" name="operation" value='symmetrical'>$$\underline{\underline{A}}^S$$</button>
+    <button type="submit" name="operation" value='first_invariant'>$$I_1(\underline{\underline{A}})$$</button>
+    <button type="submit" name="operation" value='second_invariant'>$$I_2(\underline{\underline{A}})$$</button>
+    <button type="submit" name="operation" value='third_invariant'>$$I_3(\underline{\underline{A}})$$</button>
+    <button type="submit" name="operation" value='vector_invariant'>$$\underline{\underline{A_{\times}}}$$</button>
+    <button type="submit" name="operation" value='second_degree'>$$\underline{\underline{A}}^2$$</button>
+    <button type="submit" name="operation" value='inverse'>$$\underline{\underline{A}}^{-1}$$</button>
+
+  </form>
+
+{% endblock %}

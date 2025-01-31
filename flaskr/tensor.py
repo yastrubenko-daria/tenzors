@@ -178,3 +178,51 @@ def calculator():
 
     return render_template('tensor/calculator.html', user=g.user, user_id=g.user['id'])
 
+
+@bp.route('/calculator/rotation', methods=["GET", "POST"])
+def calculator_rotation():
+    if request.method =="POST":
+        P = request.form['tensor_P']
+        angle = request.form['angle']
+        vec = request.form['rotation_vector']
+        a = request.form['vector']
+        #plane = request.form['plane']
+        operation = request.form['operation']
+        #todo: подумать над ошибками 1) вдруг всё пустое-> вывод строчки
+        #todo: пустая строка в A условия ввода
+        if P != '0':
+            P=Rotation_tensor(P)
+        if vec != '0':
+            vec=Vector(vec)
+        if a != '0':
+            a=Vector(a)
+        if operation == "rotation":
+            if P == '0':
+                if angle=='0' or vec=='0':
+                    return render_template('tensor/rotation.html',ten=True, vec=False, flag=True, user=g.user, user_id=g.user['id'])
+                else:
+                    P=Rotation_tensor(vec=vec, angle=angle)
+            if a != '0':
+                return render_template('tensor/rotation.html', ten=False, vec=True, flag=False, user=g.user, user_id=g.user['id'])
+            b=P.mult_scal_vec(a)
+            if b != 0:
+                b=b.vec
+            return render_template('tensor/result.html', A=P, a=a, b=b, operation=operation,user=g.user, user_id=g.user['id'])
+        if operation == "find_angle":
+            if P == '0':
+                return render_template('tensor/rotation.html',ten=True, vec=False, flag=False,user=g.user, user_id=g.user['id'])
+            angle=P.angle
+            return render_template('tensor/result.html', A=P, angle=angle, operation=operation,user=g.user, user_id=g.user['id'])
+        if operation == "find_vec":
+            if P == '0':
+                return render_template('tensor/calculator.html',ten=True, vec=False, flag=False,user=g.user, user_id=g.user['id'])
+            vec = P.vec
+            return render_template('tensor/result.html', A=P, vec=vec, operation=operation,user=g.user, user_id=g.user['id'])
+        if operation == "find_rot_tensor":
+            if angle == '0' or vec == '0':
+                return render_template('tensor/rotation.html', ten=False, vec=False, flag=True,user=g.user, user_id=g.user['id'])
+            else:
+                P = Rotation_tensor(vec=vec, angle=angle)
+            return render_template('tensor/result.html', A=P, operation=operation,user=g.user, user_id=g.user['id'])
+
+    return render_template('tensor/rotation.html', user=g.user, user_id=g.user['id'])

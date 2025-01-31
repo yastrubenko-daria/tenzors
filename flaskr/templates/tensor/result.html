@@ -45,6 +45,20 @@
     $$\underline{\underline{A}}^2={{C}}$$
 {% elif operation=='inverse' %}
     $$\underline{\underline{A}}^{-1}={{C}}$$
+{% elif operation=='rotation' %}
+    $$({{A.tensor}}) \cdot ({{a.vec}})={{b}}$$
+    $$Угол поворота: {{A.angle}}$$
+    $$Вектор поворота: {{A.vec}}$$
+{% elif operation=='find_angle' %}
+    $$Тензор поворота: {{A.tensor}}$$
+    $$Угол поворота: {{A.angle}}$$
+{% elif operation=='find_vec' %}
+    $$Тензор поворота: {{A.tensor}}$$
+    $$Вектор поворота: {{A.vec}}$$
+{% elif operation=='find_rot_tensor' %}
+    $$Тензор поворота: {{A.tensor}}$$
+    $$Угол поворота: {{A.angle}}$$
+    $$Вектор поворота: {{A.vec}}$$
 {% endif %}
 <button class="nav-item">
       <a class="nav-link active" href="{{url_for('tensor.calculator') }}">BACK</a>
